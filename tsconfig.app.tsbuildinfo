@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/Button.tsx","./src/components/Input.tsx","./src/components/LinkButton.tsx","./src/components/SearchBar.tsx","./src/lib/api.ts","./src/lib/utils.ts","./src/pages/CoursePapersPage.tsx","./src/pages/CoursesPage.tsx","./src/pages/PaperFilesPage.tsx","./src/types/api.ts"],"version":"5.9.3"}

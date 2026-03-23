@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply min-h-screen text-slate-900;
+  }
+  body {
+    @apply m-0 bg-slate-50 antialiased font-sans;
+  }
+}
+
