@@ -9,6 +9,14 @@ React + TypeScript + Tailwind app for browsing SRM previous year question papers
 - Paper file listing with fresh download URL fetch per click
 - No authentication
 
+## Use Case
+
+This platform helps students quickly find and access Previous Year Questions (PYQs) across 5000+ subjects/courses through a single, user-friendly interface.
+
+In typical exam preparation, PYQs are often scattered across class groups, shared drives, and personal folders, making revision slow and inconsistent. Students can use this platform to search their course, browse available papers by year or term, and open relevant files in a few steps—without manually chasing links from multiple sources.
+
+Common workflows include building a last-week revision plan by collecting recent papers for each enrolled subject, practicing topic-wise by comparing question patterns across years, and doing timed mock sessions using past papers before internals or end-semester exams. By reducing search friction and centralizing access, the platform helps students spend more time practicing and less time finding material.
+
 ## API
 
 - Development uses Vite proxy (`/api`) to avoid browser CORS issues.
