@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { listCourses, listCoursePapers, listPaperFiles, getFileDownloadUrl } from './lib/api';
 import type { Paper } from './types/api';
-import { Analytics } from "@vercel/analytics/next"
 
 type PaperWithCourse = Paper & { courseCode: string; courseName: string };
 type CourseGroup = { courseCode: string; courseName: string; papers: PaperWithCourse[] };
@@ -321,8 +320,7 @@ function App() {
     }, 2200);
   }
 
-  return <>
-  
+  return (
     <div className="flex flex-col h-screen max-lg:h-[100dvh] bg-slate-50 font-sans text-slate-900 overflow-hidden">
       {/* Navbar */}
       <header className="flex-none flex items-center justify-between px-6 py-4 max-lg:px-4 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm z-20 h-16 max-lg:h-auto max-lg:min-h-16">
@@ -560,9 +558,10 @@ function App() {
           )}
         </div>
       </main>
+      
+      
     </div>
-    <Analytics />
-  </>
+  );
 }
 
 export default App;
