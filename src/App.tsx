@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { listCourses, listCoursePapers, listPaperFiles, getFileDownloadUrl } from './lib/api';
 import type { Paper } from './types/api';
