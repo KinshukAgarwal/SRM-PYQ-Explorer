@@ -215,14 +215,20 @@ export default function PaperFilesPage() {
         ) : null}
       </div>
 
-      {paper?.metadata_json && Object.keys(paper.metadata_json).length > 0 ? (
+      {paper?.metadata && Object.keys(paper.metadata).length > 0 ? (
         <div className="bg-white border border-slate-200/80 rounded-xl p-4 sm:p-6 shrink-0 shadow-sm">
           <h2 className="text-sm font-bold text-slate-900">Metadata</h2>
           <dl className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Object.entries(paper.metadata_json).map(([key, value]) => (
+            {Object.entries(paper.metadata).map(([key, value]) => (
               <div key={key} className="rounded-lg border border-slate-100 bg-slate-50/50 p-3.5 hover:bg-slate-50 transition-colors">
                 <dt className="text-[10px] uppercase font-bold tracking-widest text-slate-400">{key}</dt>
-                <dd className="mt-1.5 text-sm font-semibold text-slate-700">{value || 'NA'}</dd>
+                <dd className="mt-1.5 text-sm font-semibold text-slate-700">
+                  {value === null
+                    ? 'NA'
+                    : Array.isArray(value)
+                      ? value.join(', ')
+                      : String(value)}
+                </dd>
               </div>
             ))}
           </dl>

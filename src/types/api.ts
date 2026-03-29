@@ -35,7 +35,12 @@ export interface Paper {
 }
 
 export interface PaperDetails extends Paper {
-  metadata_json: Record<string, string | null> | null
+  metadata: {
+    exam_month: string | number | null
+    exam_year: number | null
+    semester: number[] | null
+    page_found: number | null
+  } | null
   course: CourseSummary
 }
 
