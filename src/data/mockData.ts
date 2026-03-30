@@ -43,7 +43,7 @@ export const quickFilters: QuickFilter[] = [
 
 export const statItems: StatItem[] = [
   { value: '10K+', label: 'Question papers', highlighted: true },
-  { value: '45', label: 'Departments' },
+  { value: '45+', label: 'Departments' },
   { value: '8', label: 'Semesters covered' },
   { value: '24/7', label: 'Access anytime' },
 ];

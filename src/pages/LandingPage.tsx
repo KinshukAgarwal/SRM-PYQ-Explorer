@@ -5,12 +5,12 @@ import { StatCard } from '../components/StatCard';
 import { statItems } from '../data/mockData';
 
 const popularSearches = [
-  { code: '21CSC101T', name: 'Programming in C' },
-  { code: '21CSC201J', name: 'Data Structures' },
-  { code: '21MAB101T', name: 'Calculus & Linear Algebra' },
-  { code: '21PHY101T', name: 'Engineering Physics' },
-  { code: '21CSS101J', name: 'Python Programming' },
-  { code: '21EEE101J', name: 'Basic Electrical Engineering' },
+  { code: '21CSC101T', name: 'Object Oriented Design and Programming' },
+  { code: '21CSC201J', name: 'Data Structures and Algorithms' },
+  { code: '21CSC202J', name: 'Operating Systems' },
+  { code: '21CSC302J', name: 'Computer Networks' },
+  { code: '21MAB101T', name: 'Calculus and Linear Algebra' },
+  { code: '21CSS101J', name: 'Programming for Problem Solving' },
 ];
 
 const quickFilterOptions = [
@@ -22,14 +22,14 @@ const quickFilterOptions = [
 
 const features = [
   {
-    title: 'All exam types',
-    description: 'CAT-1, CAT-2, Semester End, Lab exams — everything in one place.',
+    title: 'Semester end papers',
+    description: 'Final semester exam papers across multiple departments.',
     icon: '📚',
   },
   {
-    title: 'Updated regularly',
-    description: 'New papers added within days of exam completion.',
-    icon: '⚡',
+    title: 'Community driven',
+    description: 'Papers shared by students, for students.',
+    icon: '🤝',
   },
   {
     title: 'Free forever',
@@ -58,7 +58,7 @@ export function LandingPage() {
         <div className="hero-badge">
           <span>10,000+ papers</span>
           <span className="badge-separator">·</span>
-          <span>45 departments</span>
+          <span>45+ departments</span>
         </div>
         
         <h1 className="hero-title">
