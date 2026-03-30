@@ -104,11 +104,6 @@ export function SearchInput({
     setIsOpen(false);
     setHighlightedIndex(-1);
     inputRef.current?.focus();
-    
-    // Auto-submit after selection
-    setTimeout(() => {
-      onSubmit?.();
-    }, 50);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -132,7 +127,16 @@ export function SearchInput({
       case 'Enter':
         if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
           event.preventDefault();
-          selectSuggestion(suggestions[highlightedIndex]);
+          event.stopPropagation();
+          const selected = suggestions[highlightedIndex];
+          onChange?.(selected.code);
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          inputRef.current?.blur(); // Blur after selection
+          // Submit after state update
+          setTimeout(() => {
+            onSubmit?.();
+          }, 10);
         }
         break;
       case 'Escape':
@@ -145,6 +149,7 @@ export function SearchInput({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsOpen(false);
+    inputRef.current?.blur(); // Blur input after search to hide suggestions
     onSubmit?.();
   };
 

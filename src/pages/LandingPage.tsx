@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '../components/SearchInput';
 import { StatCard } from '../components/StatCard';
-import { statItems, quickFilters } from '../data/mockData';
+import { statItems } from '../data/mockData';
 
 const popularSearches = [
   { code: '21CSC101T', name: 'Programming in C' },
@@ -11,6 +11,13 @@ const popularSearches = [
   { code: '21PHY101T', name: 'Engineering Physics' },
   { code: '21CSS101J', name: 'Python Programming' },
   { code: '21EEE101J', name: 'Basic Electrical Engineering' },
+];
+
+const quickFilterOptions = [
+  { id: 'compiler', label: 'Compiler Design' },
+  { id: 'discrete', label: 'Discrete Mathematics' },
+  { id: 'data-science', label: 'Data Science' },
+  { id: 'ood', label: 'Object Oriented Design' },
 ];
 
 const features = [
@@ -73,7 +80,7 @@ export function LandingPage() {
 
         <div className="quick-filters">
           <span className="quick-label">Popular:</span>
-          {quickFilters.slice(0, 4).map((filter) => (
+          {quickFilterOptions.map((filter) => (
             <button
               key={filter.id}
               className="quick-chip"

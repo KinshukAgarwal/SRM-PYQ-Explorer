@@ -164,7 +164,16 @@ async function getDownloadableUrl(file: FileRecord) {
   return response.data.download_url;
 }
 
+function isMobileDevice() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
 function toEmbedUrl(url: string) {
+  // Mobile browsers can't render PDFs in iframes natively
+  // Use Google Docs Viewer as a fallback for mobile
+  if (isMobileDevice()) {
+    return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+  }
   return `${url}#toolbar=1&navpanes=0&view=FitH`;
 }
 
@@ -440,7 +449,7 @@ export function PaperPreviewPage() {
     : 'No paper selected';
 
   return (
-    <div className="preview-page">
+    <div className="preview-page preview-page--wide">
       <div className="page-top-bar">
         <BackButton fallbackPath="/results" label="Results" />
       </div>
@@ -452,10 +461,17 @@ export function PaperPreviewPage() {
           <p className="preview-subtitle">{selectedPaperSubtitle}</p>
         </div>
         <div className="preview-actions-top">
+          <button type="button" className="ghost-action" onClick={onOpenInNewTab} disabled={!viewerUrl || actionBusy === 'open-tab'}>
+            {actionBusy === 'open-tab' ? 'Opening...' : 'Open in New Tab'}
+          </button>
+          <button type="button" className="ghost-action" onClick={onShare} disabled={!selectedPaperId || actionBusy === 'share'}>
+            {actionBusy === 'share' ? 'Sharing...' : 'Share'}
+          </button>
         </div>
       </div>
 
-      <section className="preview-layout">
+      <section className="preview-layout-wide">
+        {/* Left sidebar - Available Papers */}
         <aside className="papers-sidebar">
           <div className="papers-sidebar__top">
             <h2>Available Papers</h2>
@@ -488,34 +504,31 @@ export function PaperPreviewPage() {
                   <p>{paper.title}</p>
                 </div>
                 <button type="button" aria-label="Open paper" className="paper-item__open">
-                  &gt;
+                  →
                 </button>
               </article>
             ))}
           </div>
         </aside>
 
-        <div className="preview-main">
-          <div className="preview-main__actions">
-            <button type="button" onClick={onOpenInNewTab} disabled={!viewerUrl || actionBusy === 'open-tab'}>
-              {actionBusy === 'open-tab' ? 'Opening...' : 'Open in New Tab'}
-            </button>
-            <button type="button" onClick={onShare} disabled={!selectedPaperId || actionBusy === 'share'}>
-              {actionBusy === 'share' ? 'Sharing...' : 'Share'}
-            </button>
-          </div>
-
+        {/* Center - PDF Viewer (majority of space) */}
+        <main className="preview-center">
           {error ? <p className="preview-note preview-note--error">{error}</p> : null}
           {statusMessage ? <p className="preview-note">{statusMessage}</p> : null}
 
-          <div className="pdf-shell">
+          <div className="pdf-shell pdf-shell--expanded">
             <div className="pdf-toolbar">
               <span>{pageLabel}</span>
               <span>{viewerUrl ? '100%' : '-'}</span>
             </div>
 
             <div className={`pdf-canvas ${viewerUrl ? 'pdf-canvas--embed' : ''}`}>
-              {loadingFiles || loadingViewer ? <p>Loading PDF preview...</p> : null}
+              {loadingFiles || loadingViewer ? (
+                <div className="pdf-loading">
+                  <div className="loading-spinner"></div>
+                  <p>Loading PDF preview...</p>
+                </div>
+              ) : null}
 
               {!loadingFiles && !loadingViewer && viewerUrl ? (
                 <iframe
@@ -525,33 +538,56 @@ export function PaperPreviewPage() {
                 />
               ) : null}
 
-              {!loadingFiles && !loadingViewer && !viewerUrl ? <p>No PDF available for this paper.</p> : null}
-            </div>
-
-            <div className="meta-grid">
-              <div className="meta-item">
-                <span>File Size</span>
-                <strong>{formatBytes(activeFile?.size_bytes ?? null)}</strong>
-              </div>
-              <div className="meta-item">
-                <span>Exam Year</span>
-                <strong>{selectedPaper?.exam_year ?? 'Unknown'}</strong>
-              </div>
-              <div className="meta-item">
-                <span>Exam Month</span>
-                <strong>{formatMonth(selectedPaper?.exam_month ?? null)}</strong>
-              </div>
-              <div className="meta-item">
-                <span>Course Code</span>
-                <strong>{selectedPaper?.courseCode ?? 'Unknown'}</strong>
-              </div>
-              <div className="meta-item">
-                <span>Course Name</span>
-                <strong>{selectedPaper?.courseName ?? 'Unknown'}</strong>
-              </div>
+              {!loadingFiles && !loadingViewer && !viewerUrl ? (
+                <div className="pdf-empty">
+                  <p>No PDF available for this paper.</p>
+                </div>
+              ) : null}
             </div>
           </div>
-        </div>
+        </main>
+
+        {/* Right sidebar - Metadata Panel */}
+        <aside className="metadata-sidebar">
+          <div className="metadata-sidebar__header">
+            <h2>Paper Details</h2>
+          </div>
+          
+          <div className="metadata-list">
+            <div className="metadata-card">
+              <span className="metadata-label">Course Code</span>
+              <span className="metadata-value metadata-value--mono">{selectedPaper?.courseCode ?? 'Unknown'}</span>
+            </div>
+            <div className="metadata-card">
+              <span className="metadata-label">Course Name</span>
+              <span className="metadata-value">{selectedPaper?.courseName ?? 'Unknown'}</span>
+            </div>
+            <div className="metadata-card">
+              <span className="metadata-label">Exam Type</span>
+              <span className="metadata-value">{formatExamTerm(selectedPaper?.exam_term ?? null)}</span>
+            </div>
+            <div className="metadata-card">
+              <span className="metadata-label">Exam Session</span>
+              <span className="metadata-value">{formatMonthYear(selectedPaper?.exam_month ?? null, selectedPaper?.exam_year ?? null)}</span>
+            </div>
+            <div className="metadata-card">
+              <span className="metadata-label">File Size</span>
+              <span className="metadata-value metadata-value--mono">{formatBytes(activeFile?.size_bytes ?? null)}</span>
+            </div>
+          </div>
+
+          <div className="metadata-actions">
+            <a 
+              href={viewerUrl ?? '#'} 
+              download 
+              className={`download-btn ${!viewerUrl ? 'download-btn--disabled' : ''}`}
+              onClick={(e) => !viewerUrl && e.preventDefault()}
+            >
+              <span>↓</span>
+              Download PDF
+            </a>
+          </div>
+        </aside>
       </section>
     </div>
   );

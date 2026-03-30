@@ -266,6 +266,7 @@ export function SearchResultsPage() {
   const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
   const [selectedSemesters, setSelectedSemesters] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const queryCacheRef = useRef<Map<string, CachedSearchPayload>>(new Map());
   const semesterCacheRef = useRef<Map<string, number[]>>(new Map());
@@ -581,7 +582,29 @@ export function SearchResultsPage() {
       </div>
 
       <section className="results-layout">
-        <aside className="results-sidebar">
+        {/* Mobile filter toggle button */}
+        <button 
+          type="button" 
+          className="mobile-filter-toggle"
+          onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+          aria-expanded={mobileFiltersOpen}
+        >
+          <span>Filters</span>
+          <svg 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2"
+            className={mobileFiltersOpen ? 'rotate-180' : ''}
+          >
+            <polyline points="6,9 12,15 18,9" />
+          </svg>
+          {hasSelectedFilters && <span className="filter-badge">{selectedYears.length + selectedMonths.length + selectedSemesters.length}</span>}
+        </button>
+
+        <aside className={`results-sidebar ${mobileFiltersOpen ? 'results-sidebar--open' : ''}`}>
           <div className="sidebar-title-row">
             <h2>Filters</h2>
             <button type="button" onClick={clearFilters} disabled={!hasSelectedFilters}>
