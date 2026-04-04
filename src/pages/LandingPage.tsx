@@ -58,7 +58,7 @@ export function LandingPage() {
         <div className="hero-badge">
           <span>10,000+ papers</span>
           <span className="badge-separator">·</span>
-          <span>45+ departments</span>
+          <span>45 departments</span>
         </div>
         
         <h1 className="hero-title">
