@@ -5,7 +5,7 @@ export function AppNavbar() {
     <header className="top-navbar">
       <Link to="/" className="top-navbar__title">SRM PYQ</Link>
       <a
-        href="https://srm-pyq-api-docs.vercel.app/"
+        href="https://srm-pyq-api.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
         className="docs-button group"
